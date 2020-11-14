@@ -7,5 +7,5 @@ type config struct {
 	ChannelID     int64  `env:"CHANNEL_ID,required"`
 
 	TikTokUsername  string `env:"TIKTOK_USERNAME,required"`
-	TikTokSecUserID string `env:"-"`
+	TikTokSecUserID string `env:"TIKTOK_SEC_USER_ID"`
 }

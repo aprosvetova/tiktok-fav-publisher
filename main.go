@@ -32,9 +32,11 @@ func main() {
 		log.Fatalln("Telegram", err)
 	}
 
-	cfg.TikTokSecUserID, err = getSecUserID(cfg.TikTokUsername)
-	if err != nil {
-		log.Fatalln("SecUID", err)
+	if cfg.TikTokSecUserID == "" {
+		cfg.TikTokSecUserID, err = getSecUserID(cfg.TikTokUsername)
+		if err != nil {
+			log.Fatalln("SecUID", err)
+		}
 	}
 
 	log.Println("Polling...")
