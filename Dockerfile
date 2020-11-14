@@ -13,8 +13,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -a -installsuffix cgo -o 
 
 FROM alpine
 
-RUN apk update && apk add --no-cache ffmpeg
-
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /go/bin/app /go/bin/app
 

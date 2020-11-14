@@ -32,6 +32,11 @@ func main() {
 		log.Fatalln("Telegram", err)
 	}
 
+	cfg.TikTokSecUserID, err = getSecUserID(cfg.TikTokUsername)
+	if err != nil {
+		log.Fatalln("SecUID", err)
+	}
+
 	log.Println("Polling...")
 
 	for {
@@ -41,28 +46,29 @@ func main() {
 }
 
 func checkNewVideos() {
-	likes, err := getLikes(cfg.TikTokUsername)
+	likes, err := getLikedVideos(cfg.TikTokSecUserID, 10)
 	if err != nil {
 		log.Println("Likes", err)
 		return
 	}
 
-	for _, id := range likes {
-		if wasAlreadyPosted(id) {
+	for _, v := range likes {
+		if wasAlreadyPosted(v.ID) {
 			continue
 		}
 
-		link, err := getDownloadURL(id)
-		if err != nil {
-			log.Println("Download URL", err)
-			continue
-		}
+		log.Println("Posting", v.ID)
 
-		log.Println("Posting", id)
+		menu := &tb.ReplyMarkup{}
+		menu.Inline(
+			menu.Row(menu.URL("Оригинал", v.ShareURL)),
+		)
 
-		_, err = tg.Send(tb.ChatID(cfg.ChannelID), &tb.Video{File: tb.File{FileURL: link}})
+		_, err = tg.Send(tb.ChatID(cfg.ChannelID), &tb.Video{
+			File: tb.File{FileURL: v.DownloadURL},
+		}, menu)
 		if err != nil {
-			log.Println("Send video", err, link)
+			log.Println("Send video", err, v.DownloadURL)
 		}
 
 		time.Sleep(time.Second * 3)
