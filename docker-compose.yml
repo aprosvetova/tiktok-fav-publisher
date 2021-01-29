@@ -1,0 +1,23 @@
+version: '2'
+services:
+  app:
+    image: koteeq/tiktok-fav-publisher:latest
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      DB_ADDR: 'redis:6379'
+      TG_TOKEN: '<TELEGRAM BOT TOKEN>'
+      CHANNEL_ID: '<ID OF THE CHANNEL TO POST TO>'
+      TIKTOK_USERNAME: '<YOUR TIKTOK USERNAME>'
+      TIKTOK_SEC_USER_ID: '<CHECK OUT README>'
+  redis:
+    image: "redis:alpine"
+    command: ["redis-server", "--appendonly", "yes"]
+    restart: always
+    volumes:
+      - redis:/data
+
+volumes:
+  redis:
+    driver: local
