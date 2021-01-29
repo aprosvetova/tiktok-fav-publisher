@@ -13,6 +13,7 @@ import (
 
 const Aid = 1233
 const UserAgent = "com.zhiliaoapp.musically"
+const OdinTt = "c44c45e3aa0c1faae1d6bd6f21907c0cbf48736d70367fd2c8c253444d8dd63388ad96c29933dccb2311ddd94c682b9eaea57a3bab4d025cdc95d0bc939fa714"
 
 var secUIDReg = regexp.MustCompile(`(?m)secUid":"(.*?)"`)
 var seededRand = rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -47,6 +48,7 @@ func getLikedVideos(secUserID string, count int) ([]video, error) {
 		fmt.Sprintf("aid=%d&device_id=%d&sec_user_id=%s&count=%d",
 			Aid, 1000000000+seededRand.Intn(1000000000), secUserID, count))
 	req.Header.SetUserAgent(UserAgent)
+	req.Header.SetCookie("odin_tt", OdinTt)
 
 	err := fasthttp.Do(req, res)
 	if err != nil {
