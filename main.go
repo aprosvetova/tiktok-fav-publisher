@@ -63,7 +63,7 @@ func checkNewVideos() {
 
 		menu := &tb.ReplyMarkup{}
 		menu.Inline(
-			menu.Row(menu.URL("Оригинал", v.ShareURL)),
+			menu.Row(menu.URL("BTN Оригинал", v.ShareURL)),
 		)
 
 		_, err = tg.Send(tb.ChatID(cfg.ChannelID), &tb.Video{
